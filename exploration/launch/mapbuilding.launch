@@ -1,0 +1,6 @@
+<launch>
+  <node name="map_build" output="screen" pkg="exploration" respawn="false" type="build_map" >
+    <rosparam file="$(find exploration)/config/robot/robots_name.yaml" command="load" />
+    
+  </node>
+</launch>

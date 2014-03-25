@@ -1,0 +1,3 @@
+<launch>
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find exploration)/config/rviz_gazebo/navigation_exploration_2_robots.rviz"/>
+</launch>

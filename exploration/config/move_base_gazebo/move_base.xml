@@ -1,0 +1,35 @@
+<launch>
+
+  <arg name="robot_name" default="turtlebot"/>
+  <arg name="o_x" default="0.0" />
+  <arg name="o_y" default="0.0" />
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <param name="footprint_padding" value="0.01" />
+    <param name="controller_frequency" value="10.0" />
+    <param name="controller_patience" value="3.0" />
+
+    <param name="oscillation_timeout" value="30.0" />
+    <param name="oscillation_distance" value="0.5" />
+
+    <rosparam file="$(find exploration)/config/move_base_gazebo/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find exploration)/config/move_base_gazebo/costmap_common_params.yaml" command="load" ns="local_costmap" />
+    <rosparam file="$(find exploration)/config/move_base_gazebo/costmap_common_params.yaml" command="load" ns="dwa_planner" />
+    <rosparam file="$(find exploration)/config/move_base_gazebo/local_costmap_params.yaml" command="load" />
+    <rosparam file="$(find exploration)/config/move_base_gazebo/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find exploration)/config/move_base_gazebo/base_local_planner_params.yaml" command="load" /> 
+    <rosparam file="$(find exploration)/config/move_base_gazebo/move_base_params.yaml" command="load" />
+
+    <remap from="cmd_vel" to="navigation_velocity_smoother/raw_cmd_vel"/>
+
+    <param name="global_costmap/robot_base_frame" value="$(arg robot_name)/base_footprint"/>
+    <param name="local_costmap/robot_base_frame" value="$(arg robot_name)/base_footprint"/>
+    <param name="local_costmap/global_frame" value="$(arg robot_name)/odom"/>
+<!--
+    <param name="global_costmap/global_frame" value="$(arg robot_name)/map"/>
+-->
+    <param name="global_costmap/origin_x" value="$(arg o_x)"/>
+    <param name="global_costmap/origin_y" value="$(arg o_y)"/>
+<!--    <remap from="map" to="/map" /> -->
+  </node>
+
+</launch>

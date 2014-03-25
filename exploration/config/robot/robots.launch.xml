@@ -1,0 +1,38 @@
+<launch>
+  <!-- Plusieurs robots -->
+   
+  <!-- Turtlebot configuration pour tout les robots --> 
+
+  <arg name="base" default="$(optenv TURTLEBOT_BASE kobuki)"/> 
+  <arg name="battery" default="$(optenv TURTLEBOT_BATTERY /proc/acpi/battery/BAT0)"/>
+  <arg name="stacks" default="$(optenv TURTLEBOT_STACKS hexagons)"/>
+  <arg name="3d_sensor" default="$(optenv TURTLEBOT_3D_SENSOR kinect)"/>
+
+  <arg name="model" default="$(find exploration)/config/urdf/$(arg base)_$(arg stacks)_$(arg 3d_sensor).urdf.xacro" />
+
+   <!-- send the robot XML to param server -->
+   <param name="robot_description" command="$(find xacro)/xacro.py '$(arg model)'" />
+   <param name="frame_id" value="/map" />
+
+  <!-- Bring up robot1 -->
+  <group ns="turtlebot_1">
+    <include file="$(find exploration)/config/robot/robot.launch.xml" >
+      <arg name="y" value="-0.5" />
+      <arg name="robot_name"  value="turtlebot_1" />
+      <arg name="o_x" value="-5.0" />
+      <arg name="o_y" value="-5.0" />
+      <arg name="angle" value="3.141592653" />
+    </include>
+  </group>
+
+  <group ns="turtlebot_2">
+    <include file="$(find exploration)/config/robot/robot.launch.xml" >
+      <arg name="x" value="4.0" />
+      <arg name="y" value="-0.5" />
+      <arg name="o_x" value="-5.0" />
+      <arg name="o_y" value="-5.0" />
+      <arg name="robot_name"  value="turtlebot_2" />
+    </include>
+  </group>
+
+</launch>
